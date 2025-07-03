@@ -42,4 +42,9 @@ pipeline {
             
         }
     }
+    post{
+        always{
+            jnunit 'test-results.xml' // Publish JUnit test results
+        }
+    }
 }
