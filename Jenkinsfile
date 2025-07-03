@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    Environment {
+    environment {
         // Define any environment variables here if needed
-        INDEX_FILE = 'inddex.html'
+        INDEX_FILE = 'index.html'
     }
 
     stages {
