@@ -29,7 +29,7 @@ pipeline {
             steps{
                 sh '''
                 echo 'Testing...'
-                grep ${INDEX_FILE} || echo "No Jenkins link found in ${INDEX_FILE}"
+                test -f build/${INDEX_FILE}
                 npm ci
                 npm test
             '''
