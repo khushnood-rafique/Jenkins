@@ -44,7 +44,7 @@ pipeline {
     }
     post{
         always{
-            jnunit 'test-results.xml' // Publish JUnit test results
+            junit 'test-results.xml' // Publish JUnit test results
         }
     }
 }
