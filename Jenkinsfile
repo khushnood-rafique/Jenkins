@@ -26,13 +26,18 @@ pipeline {
             }
         }
         stage('Test'){
+            agent{
+                docker {
+                    image 'node:18-alpine' // Use Node.js 18 Alpine image
+                    reuseNode true // Reuse the node to speed up the build
+                }
+            }
             steps{
                 sh '''
-                echo 'Testing...'
-                test -f build/${INDEX_FILE}
-                npm ci
-                npm test
-            '''
+                    echo 'Testing...'
+                    test -f build/${INDEX_FILE}
+                    npm test
+                '''
             }
             
         }
