@@ -26,11 +26,14 @@ pipeline {
             }
         }
         stage('Test'){
-            sh '''
+            steps{
+                sh '''
                 grep Jenkins/ ${INDEX_FILE} || echo "No Jenkins link found in ${INDEX_FILE}"
                 npm ci
                 npm test
             '''
+            }
+            
         }
     }
 }
