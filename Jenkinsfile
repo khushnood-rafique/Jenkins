@@ -25,40 +25,48 @@ pipeline {
                 '''
             }
         }
-        stage('Test'){
-            agent{
-                docker {
-                    image 'node:18-alpine' // Use Node.js 18 Alpine image
-                    reuseNode true // Reuse the node to speed up the build
+
+        stage('Run Tests') {
+            parallel{
+                
+                stage('E2E'){
+                    agent{
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.53.0-noble' // Use Playwright image
+                            reuseNode true // Reuse the node to speed up the build
+                        }
+                    }
+
+                    steps {
+                        sh '''
+                            npm install serve
+                            node_modules/.bin/serve -s build &
+                            sleep 10
+                            npx playwright test --report=html
+                        '''
+                    }
+                }
+
+                stage('Unit Test'){
+                    agent{
+                        docker {
+                            image 'node:18-alpine' // Use Node.js 18 Alpine image
+                            reuseNode true // Reuse the node to speed up the build
+                            }
+                        }
+                        
+                        steps{
+                            sh '''
+                                echo 'Testing...'
+                                test -f build/${INDEX_FILE}
+                                npm test
+                            '''
+                        }
                 }
             }
-            steps{
-                sh '''
-                    echo 'Testing...'
-                    test -f build/${INDEX_FILE}
-                    npm test
-                '''
-            }
-            
         }
 
-        stage('E2E'){
-            agent{
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.53.0-noble' // Use Playwright image
-                    reuseNode true // Reuse the node to speed up the build
-                }
-            }
-
-            steps {
-                sh '''
-                    npm install serve
-                    node_modules/.bin/serve -s build &
-                    sleep 10
-                    npx playwright test
-                '''
-            }
-        }
+        
     }
 
     post {
