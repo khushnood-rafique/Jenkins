@@ -29,7 +29,9 @@ pipeline {
 
         stage('Approval'){
             steps {
-                input message: 'Do you want to proceed with the tests?', ok: 'Yes, proceed'
+                timeout(time: 1, unit: 'MINUTES') {
+                    input message: 'Do you want to proceed with the tests?', ok: 'Yes, proceed'
+                }
             }
         }
 
