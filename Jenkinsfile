@@ -27,6 +27,12 @@ pipeline {
             }
         }
 
+        stage('Approval'){
+            steps {
+                input message: 'Do you want to proceed with the tests?', ok: 'Yes, proceed'
+            }
+        }
+
         stage('Run Tests') {
             parallel{
                 
