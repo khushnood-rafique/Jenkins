@@ -54,15 +54,14 @@ pipeline {
                 stage('E2E'){
                     agent{
                         docker {
-                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy' // Use Playwright image
+                            image 'my-playwright-app' // Use Playwright image
                             reuseNode true // Reuse the node to speed up the build
                         }
                     }
 
                     steps {
                         sh '''
-                            npm install serve
-                            node_modules/.bin/serve -s build &
+                            serve -s build &
                             sleep 10
                             npx playwright test --report=html
                         '''
