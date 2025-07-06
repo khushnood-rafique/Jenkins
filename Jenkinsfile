@@ -54,7 +54,7 @@ pipeline {
                 stage('E2E'){
                     agent{
                         docker {
-                            image 'my-playwright' // Use Playwright image
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy' // Use Playwright image
                             reuseNode true // Reuse the node to speed up the build
                         }
                     }
