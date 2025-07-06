@@ -16,6 +16,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    npm install netlify-cli node-jq
                     echo 'small change'
                     ls -la
                     node --version
