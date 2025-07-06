@@ -4,6 +4,7 @@ pipeline {
     environment {
         // Define any environment variables here if needed
         INDEX_FILE = 'index.html'
+        REACT_APP_VERSION = "1.0.$BUILD_ID"
     }
 
     stages {
@@ -35,6 +36,9 @@ pipeline {
                 }
             }
         }
+
+
+
 
         stage('Run Tests') {
             parallel{
