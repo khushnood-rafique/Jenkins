@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage(Docker){
             steps{
-                sh 'docker build -t my-playwright .'
+                sh 'docker build -t my-playwright-app .'
             }
         }
 
@@ -25,7 +25,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    netlify-cli node-jq
+                    npm install netlify-cli node-jq
                     echo 'small change'
                     ls -la
                     node --version
