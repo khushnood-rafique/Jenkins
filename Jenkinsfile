@@ -25,7 +25,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli node-jq
+                    netlify-cli node-jq
                     echo 'small change'
                     ls -la
                     node --version
@@ -54,7 +54,7 @@ pipeline {
                 stage('E2E'){
                     agent{
                         docker {
-                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy' // Use Playwright image
+                            image 'my-playwright' // Use Playwright image
                             reuseNode true // Reuse the node to speed up the build
                         }
                     }
