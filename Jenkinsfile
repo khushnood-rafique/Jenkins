@@ -49,14 +49,6 @@ pipeline {
             
         }
 
-        stage('Approval'){
-            steps {
-                timeout(time: 1, unit: 'MINUTES') {
-                    input message: 'Do you want to proceed with the tests?', ok: 'Yes, proceed'
-                }
-            }
-        }
-
         stage('AWS Stage Deploy') {
             agent {
                 docker {
