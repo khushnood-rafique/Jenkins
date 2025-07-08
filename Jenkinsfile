@@ -5,8 +5,6 @@ pipeline {
         // Define any environment variables here if needed
         INDEX_FILE = 'index.html'
         REACT_APP_VERSION = "1.0.$BUILD_ID"
-        // aws access key and secret key 
-
     }
 
     stages {
@@ -17,13 +15,16 @@ pipeline {
                     args "--entrypoint=''" // Use AWS CLI image with shell entrypoint
                 }
             }
+            environment{
+                AWS_S3_BUCKET = 'jenkins-2025-07'
+            }
             steps{
                 withCredentials([usernamePassword(credentialsId: 'aws_id', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version
                         aws s3 ls
                         echo 'Hello S3' > index.html
-                        aws s3 cp index.html s3://jenkins-2025-07/index.html
+                        aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
                     '''
                 }
             }
