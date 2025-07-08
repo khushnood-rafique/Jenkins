@@ -13,6 +13,7 @@ pipeline {
             agent{
                 docker {
                     image 'amazon/aws-cli'
+                    args "--entrypoint=''" // Use AWS CLI image with shell entrypoint
                 }
             }
             steps{
