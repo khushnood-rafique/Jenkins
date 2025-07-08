@@ -12,7 +12,7 @@ pipeline {
         stage('AWS'){
             agent{
                 docker {
-                    image 'amazon/aws-cli'
+                    image 'amazon/aws-cli:2.27.49' // Use AWS CLI image
                     args "--entrypoint=''" // Use AWS CLI image with shell entrypoint
                 }
             }
