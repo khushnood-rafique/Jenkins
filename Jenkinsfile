@@ -35,7 +35,7 @@ pipeline {
             agent{
                 docker {
                     image 'amazon/aws-cli:2.27.49' // Use AWS CLI image
-                    reuseNode true // Use the same workspace as the build directory
+                    //reuseNode true // Use the same workspace as the build directory
                     args "--entrypoint=''" // Use AWS CLI image with shell entrypoint
                 }
             }
