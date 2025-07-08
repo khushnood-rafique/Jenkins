@@ -49,7 +49,7 @@ pipeline {
             
         }
 
-         stage('Approval'){
+        stage('Approval'){
             steps {
                 timeout(time: 1, unit: 'MINUTES') {
                     input message: 'Do you want to proceed with the tests?', ok: 'Yes, proceed'
@@ -74,6 +74,14 @@ pipeline {
                         aws s3 sync build s3://$AWS_S3_BUCKET --delete
                         aws s3 ls s3://$AWS_S3_BUCKET
                     '''
+                }
+            }
+        }
+
+        stage('Approval'){
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    input message: 'Do you want to proceed with the tests?', ok: 'Yes, proceed'
                 }
             }
         }
