@@ -29,30 +29,6 @@ pipeline {
                 '''
             }
         }
-
-
-        stage('AWS'){
-            agent{
-                docker {
-                    image 'amazon/aws-cli:2.27.49' // Use AWS CLI image
-                    reuseNode true // Use the same workspace as the build directory
-                    args "--entrypoint=''" // Use AWS CLI image with shell entrypoint
-                }
-            }
-            environment{
-                AWS_S3_BUCKET = 'jenkins-2025-07'
-            }
-            steps{
-                withCredentials([usernamePassword(credentialsId: 'aws_id', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    sh '''
-                        aws --version
-                        aws s3 ls
-                        aws s3 sync build s3://$AWS_S3_BUCKET
-                    '''
-                }
-            }
-        }
-
        
 
         stage('Run Tests') {   
@@ -102,9 +78,26 @@ pipeline {
             }
         }
 
-
-
-
+        stage('AWS Prod Deploy') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli:2.27.49' // Use AWS CLI image
+                    reuseNode true // Use the same workspace as the build directory
+                    args "--entrypoint=''" // Use AWS CLI image with shell entrypoint
+                }
+            }
+            environment {
+                AWS_S3_BUCKET = 'jenkins-2025-07'
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'aws_id', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    sh '''
+                        aws s3 sync build s3://$AWS_S3_BUCKET --delete
+                        aws s3 ls s3://$AWS_S3_BUCKET
+                    '''
+                }
+            }
+        }
 
         
     }
