@@ -5,10 +5,11 @@ pipeline {
         // Define any environment variables here if needed
         INDEX_FILE = 'index.html'
         REACT_APP_VERSION = "1.0.$BUILD_ID"
+        // aws access key and secret key 
+
     }
 
     stages {
-
         stage('AWS'){
             agent{
                 docker {
@@ -17,9 +18,12 @@ pipeline {
                 }
             }
             steps{
-                sh '''
-                    aws --version
-                '''
+                withCredentials([usernamePassword(credentialsId: 'aws_id', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    sh '''
+                        aws --version
+                        aws s3 ls // List S3 buckets
+                    '''
+                }
             }
         }
     
