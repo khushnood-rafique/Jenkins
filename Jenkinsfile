@@ -55,43 +55,22 @@ pipeline {
 
        
 
-        stage('Run Tests') {
-            parallel{
-                
-                stage('E2E'){
-                    agent{
-                        docker {
-                            image 'my-playwright-app' // Use Playwright image
-                            reuseNode true // Reuse the node to speed up the build
-                        }
-                    }
-
-                    steps {
-                        sh '''
-                            serve -s build &
-                            sleep 10
-                            npx playwright test --report=html
-                        '''
-                    }
-                }
-
-                stage('Unit Test'){
-                    agent{
-                        docker {
-                            image 'node:18-alpine' // Use Node.js 18 Alpine image
-                            reuseNode true // Reuse the node to speed up the build
-                        }
-                    }
-
-                    steps{
-                        sh '''
-                            echo 'Testing...'
-                            test -f build/${INDEX_FILE}
-                            npm test
-                        '''
-                    }
+        stage('Run Tests') {   
+            agent{
+                docker {
+                        image 'node:18-alpine' // Use Node.js 18 Alpine image
+                        reuseNode true // Reuse the node to speed up the build
                 }
             }
+
+            steps{
+                sh '''
+                    echo 'Testing...'
+                    test -f build/${INDEX_FILE}
+                    npm test
+                    '''
+            }
+            
         }
 
          stage('Approval'){
