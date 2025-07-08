@@ -97,14 +97,13 @@ pipeline {
                     '''
                 }
             }
-        }
-
-        
+        }      
     }
 
+    // Post-build actions: reporting and cleanup
     post {
         always {
-            junit 'jest-results/junit.xml'
+            junit 'jest-results/junit.xml' // publish test results from a JUnit-format XML file 
         }
     }
 }
